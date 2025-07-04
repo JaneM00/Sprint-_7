@@ -1,10 +1,11 @@
 # test_order.py
 import requests
 import pytest
+import allure
 from urls import BASE_URL, ORDERS_CREATE, ORDERS_LIST
 
 class TestOrder:
-    def get_sample_order_data(self):
+    def get_sample_order_data(self) -> dict:
         return {
             'firstName': 'Ivan',
             'lastName': 'Ivanov',
@@ -18,14 +19,16 @@ class TestOrder:
             'price': 1000,
         }
 
+    @allure.title("Создание заказа с разными цветами")
     @pytest.mark.parametrize("colors", [
        [],
        ["BLACK"],
        ["GREY"],
        ["BLACK", "GREY"]
     ])
-    def test_create_order_with_colors(self, colors):
+    def test_create_order_with_colors(self, colors: list):
         order_body = self.get_sample_order_data()
+        # Если список цветов пустой, исключаем поле из запроса
         order_body['color'] = colors if colors else None
 
         # Удаляем ключи со значением None
@@ -37,6 +40,7 @@ class TestOrder:
         # Проверка наличия track номера в ответе.
         assert isinstance(resp_json.get("track"), int)
 
+    @allure.title("Получение списка заказов")
     def test_get_orders(self):
         response = requests.get(f"{BASE_URL}{ORDERS_LIST}")
         assert response.status_code == 200
