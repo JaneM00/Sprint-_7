@@ -1,17 +1,21 @@
 # helpers.py
+import random
+import string
 
-from urls import BASE_URL
+def generate_random_string(length=10) -> str:
+    return ''.join(random.choice(string.ascii_lowercase) for _ in range(length))
 
-def get_full_url(endpoint):
-    return f"{BASE_URL}{endpoint}"
-
-def create_courier_payload(login="testuser", password="testpass"):
+def generate_courier_data() -> dict:
+    login = generate_random_string()
+    password = generate_random_string()
+    first_name = generate_random_string()
     return {
         "login": login,
-        "password": password
+        "password": password,
+        "firstName": first_name
     }
 
-def create_order_payload():
+def generate_order_data() -> dict:
     return {
         'firstName': 'Ivan',
         'lastName': 'Ivanov',
