@@ -1,28 +1,22 @@
 # conftest.py
 import pytest
 import requests
-from urls import BASE_URL, COURIER_REGISTER, COURIER_LOGIN
+from helpers import generate_courier_data, generate_order_data
+from urls import BASE_URL, COURIER_REGISTER
 
-@pytest.fixture(scope='session')
-def courier_token():
-    # Регистрация курьера (если нужно)
-    credentials = {
-        "login": "testuser",
-        "password": "testpass"
-    }
-    # Попытка зарегистрировать (может быть уже зарегистрирован)
-    requests.post(f"{BASE_URL}{COURIER_REGISTER}", json=credentials)
+@pytest.fixture(scope='function')
+def create_courier():
+    data = generate_courier_data()
+    response = requests.post(f"{BASE_URL}{COURIER_REGISTER}", json=data)
+    # Проверка успешного создания или существования курьера
+    assert response.status_code in [201, 409]
+    return data
 
-    # Логин и получение токена
-    response = requests.post(f"{BASE_URL}{COURIER_LOGIN}", json=credentials)
-    response.raise_for_status()
-    token_response = response.json()
-    token = token_response.get("accessToken") or token_response.get("token")
-    
-    return token
-
-@pytest.fixture
-def authorized_headers(courier_token):
-    return {
-        "Authorization": f"Bearer {courier_token}"
-    }
+@pytest.fixture(scope='function')
+def create_order():
+    from helpers import generate_order_data
+    order_data = generate_order_data()
+    response = requests.post(f"{BASE_URL}/v1/orders", json=order_data)
+    # Можно добавить проверку успешности создания заказа, если нужно
+    assert response.status_code in [200, 201]
+    return order_data
