@@ -1,21 +1,13 @@
-# helpers.py
 import random
 import string
 
-def generate_random_string(length=10) -> str:
-    return ''.join(random.choice(string.ascii_lowercase) for _ in range(length))
+def generate_random_string(length=8):
+    """Генерирует случайную строку из букв."""
+    letters = string.ascii_letters
+    return ''.join(random.choice(letters) for _ in range(length))
 
-def generate_courier_data() -> dict:
-    login = generate_random_string()
-    password = generate_random_string()
-    first_name = generate_random_string()
-    return {
-        "login": login,
-        "password": password,
-        "firstName": first_name
-    }
-
-def generate_order_data() -> dict:
+def get_sample_order_data():
+    """Возвращает шаблон данных заказа."""
     return {
         'firstName': 'Ivan',
         'lastName': 'Ivanov',
@@ -25,6 +17,6 @@ def generate_order_data() -> dict:
         'rentTime': 5,
         'deliveryDate': '2023-10-10',
         'comment': '',
-        'color': [], 
+        'color': [],
         'price': 1000,
     }
