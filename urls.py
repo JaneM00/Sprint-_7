@@ -1,4 +1,5 @@
 # urls.py
+
 BASE_URL = "https://qa-scooter.praktikum-services.ru/api"
 
 COURIER_REGISTER = "/v1/courier"
