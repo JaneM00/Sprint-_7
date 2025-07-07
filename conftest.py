@@ -17,6 +17,5 @@ def create_order():
     from helpers import generate_order_data
     order_data = generate_order_data()
     response = requests.post(f"{BASE_URL}/v1/orders", json=order_data)
-    # Можно добавить проверку успешности создания заказа, если нужно
     assert response.status_code in [200, 201]
     return order_data
