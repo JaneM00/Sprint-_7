@@ -8,6 +8,8 @@ def base_url():
 @pytest.fixture(scope='session')
 def endpoints():
     return {
-        "create_order": "/api/v1/orders",
-        "list_orders": "/api/v1/orders",
+        "create_order": "/v1/orders",
+        "list_orders": "/v1/orders",
+        "register_courier": "/v1/courier",
+        "login_courier": "/v1/courier/login",
     }
